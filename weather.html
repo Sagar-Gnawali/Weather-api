@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather details</title>
+    <link rel="stylesheet" href='style.css' type='text/css'>
+</head>
+<body>
+    <img src="img.png" width="100" height="100" >
+    <div class="search">
+        <input type='text' value='enter' id='cityname'>
+        <input type='button' value='search' id='getdata'>
+    </div>
+    <div class="display">
+        <p class="filename"></p>
+        <p class="temperature"></p>
+        <p class="maxtemp"></p>
+        <p class="mintemp"></p>
+        <p class="humidity"></p>
+        <p class="pressure"></p>
+        
+    </div>
+    <script>
+        var ctyname=document.querySelector('#cityname');
+        //var names = document.querySelector('.names');
+        var filename = document.querySelector('.filename');
+        var temp = document.querySelector('.temperature');
+        var maxtmp = document.querySelector('.maxtemp');
+        var mintmp = document.querySelector('.mintemp');
+        var humidity = document.querySelector('.humidity');
+        var prsr =  document.querySelector('.pressure');  
+        document.getElementById('getdata').addEventListener('click',getinfo);
+        function getinfo()
+        {
+            const proxy='https://cors-anywere.herokuapp.com/';;
+            fetch(`${proxy}https://api.openweathermap.org/data/2.5/weather?q=${ctyname.value}&appid=c667c5dd2a1de22b43fea1eeb381f92f`)
+            .then(function(res){ return res.json()})
+            .then(function(data){
+                filename.innerHTML=`<h2>${data['name']}</h2>`;
+                
+                temp.innerHTML = `<p>Temperature: ${data['main']['temp']-273.15} C</p> `;
+                maxtmp.innerHTML= `<p>Max temp: ${data['main']['temp_max']-273.15} C</p>`;
+                mintmp.innerHTML = `<p>Min temp: ${data['main']['temp_min']-273.15} C</p>`;
+                humidity.innerHTML = `<p>Humidity: ${data['main']['humidity']} % `;
+                prsr.innerHTML = `Pressure: ${data['main']['pressure']} hPa`;
+                
+            }).catch((error) => alert('Enter valid city name..'));
+        }
+    </script>
+    
+</body>
+</html>
